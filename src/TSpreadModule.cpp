@@ -3,11 +3,9 @@
 
 TSpreadModule::TSpreadModule(const char* Name) :
 	SoyModule	( Name ),
-	mText		( "Text", "hello" )
+	mText		( *this, "Text", "hello" )
 {
-	//ofAddListener( mOnStateChanged, this, &TSpreadModule::OnNetStateChanged );
-
 	//	connect to first port
-	ChangeState<SoyModuleState_DiscoveryBind>();
+	ChangeState<SoyModuleState_ServerBind>();
 }
 
