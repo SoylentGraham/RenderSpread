@@ -48,11 +48,8 @@ TMasterApp::TMasterApp()
 	ofAddListener( mModule.mOnPeersChanged, this, &TMasterApp::OnPeersChanged );
 	ofAddListener( mCanvas.newGUIEvent, this, &TMasterApp::OnCanvasEvent );
 
-	SoyModulePeer DefaultMaster;
-	DefaultMaster.mRef = SoyRef( "Master" );
-	DefaultMaster.mAddress = "localhost";
-	DefaultMaster.mPort = mModule.GetClusterPortRange()[0];
-	mModule.OnFoundPeer( DefaultMaster );
+	SoyModulePeerAddress LocalAddress("localhost", mModule.GetClusterPortRange()[0]);
+	mModule.OnFoundPeer( SoyRef("Master"), LocalAddress );
 }
 
 
@@ -105,7 +102,7 @@ void TMasterApp::OnCanvasEvent(ofxUIEventArgs &e)
 		OnConnectToServerButton( PeerRef );
 		return;
 	}
-
+	
 	//	reflection of variable change
 	if ( WidgetName.StartsWith(EDIT_MODULE_MEMBER_PREFIX) )
 	{
@@ -119,7 +116,8 @@ void TMasterApp::OnCanvasEvent(ofxUIEventArgs &e)
 		auto& Member = mModule.mText;
 		if ( MemberRef == Member.mRef )
 		{
-			if ( !Member.SetData( Value ) )
+			Member.SetData( Value );
+			//if ( !Member.SetData( Value ) )
 			{
 				Value.QuickClear();
 				Member.GetData( Value );
@@ -128,7 +126,7 @@ void TMasterApp::OnCanvasEvent(ofxUIEventArgs &e)
 		}
 		return;
 	}
-
+	
 }
 
 
@@ -180,7 +178,8 @@ void TMasterApp::AddModuleMemberTextEdit(const SoyModuleMemberBase& Member)
 	}
 	else
 	{
-		mCanvas.addTextInput( static_cast<const char*>( WidgetName ), static_cast<const char*>( Value ), TEXTBOX_SIZE.x, TEXTBOX_SIZE.y, OFX_UI_FONT_MEDIUM );
+		pWidget = mCanvas.addTextInput( static_cast<const char*>( WidgetName ), static_cast<const char*>( Value ), TEXTBOX_SIZE.x, TEXTBOX_SIZE.y, OFX_UI_FONT_MEDIUM );
+		pWidget->setAutoClear( false );
 	}
 }
 

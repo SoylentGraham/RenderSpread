@@ -9,3 +9,13 @@ TSpreadModule::TSpreadModule(const char* Name) :
 	ChangeState<SoyModuleState_ServerBind>();
 }
 
+		
+void TSpreadModule::Update(float TimeStep)
+{
+	//	do module update
+	SoyModule::Update( TimeStep );
+
+	//	process packets
+
+
+}

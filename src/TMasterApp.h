@@ -4,12 +4,20 @@
 #include "TSpreadModule.h"
 #include "TStateGui.h"
 
+inline SoyRef RandomIncrementedRef(const char* BaseName,int MaxInc)
+{
+	SoyRef Ref( BaseName );
+	MaxInc = ofRandom( MaxInc-1 ) + 1;
+	while ( MaxInc-- > 0 )
+		Ref++;
+	return Ref;
+}
 
 class TSpreadModuleMaster : public TSpreadModule
 {
 public:
 	TSpreadModuleMaster() :
-		TSpreadModule	( "Master" )
+		TSpreadModule	( RandomIncrementedRef("Master",100).ToString() )
 	{
 	}
 };

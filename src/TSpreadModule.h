@@ -18,6 +18,8 @@ class TSpreadModule : public SoyModule
 public:
 	TSpreadModule(const char* Name);
 
+	virtual void						Update(float TimeStep);
+
 	virtual BufferArray<uint16,100>		GetDiscoveryPortRange() const	{	return BufferArray<uint16,100>( TSpread::gDiscoveryPorts );	}
 	virtual BufferArray<uint16,100>		GetClusterPortRange() const		{	return BufferArray<uint16,100>( TSpread::gClusterPorts );	}
 	virtual void						OnNetStateChanged()				{	}

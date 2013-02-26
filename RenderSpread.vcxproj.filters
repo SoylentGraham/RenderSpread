@@ -293,5 +293,11 @@
     <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyState.hpp">
       <Filter>addons\ofxSoylent</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyPacket.h">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyPacket.hpp">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
