@@ -47,6 +47,7 @@ TMasterApp::TMasterApp()
 	//	catch peer changes
 	ofAddListener( mModule.mOnPeersChanged, this, &TMasterApp::OnPeersChanged );
 	ofAddListener( mCanvas.newGUIEvent, this, &TMasterApp::OnCanvasEvent );
+	ofAddListener( mModule.mOnMemberChanged, this, &TMasterApp::OnMemberChanged );
 
 	SoyModulePeerAddress LocalAddress("localhost", mModule.GetClusterPortRange()[0]);
 	mModule.OnFoundPeer( SoyRef("Master"), LocalAddress );
@@ -113,17 +114,7 @@ void TMasterApp::OnCanvasEvent(ofxUIEventArgs &e)
 		BufferString<100> Value = pTextWidget->getTextString().c_str();
 		
 		//	push change to module...
-		auto& Member = mModule.mText;
-		if ( MemberRef == Member.mRef )
-		{
-			Member.SetData( Value );
-			//if ( !Member.SetData( Value ) )
-			{
-				Value.QuickClear();
-				Member.GetData( Value );
-				pTextWidget->setTextString( static_cast<const char*>( Value ) );
-			}
-		}
+		OnModuleMemberEdited( MemberRef, Value, *pTextWidget );
 		return;
 	}
 	
@@ -147,24 +138,41 @@ void TMasterApp::OnConnectToServerButton(const SoyRef& PeerRef)
 }
 
 
-void TMasterApp::OnModuleMemberChanged(const SoyRef& MemberRef,const BufferString<100>& Value)
+void TMasterApp::OnMemberChanged(const SoyRef& MemberRef)
 {
-	/*
-	if ( mModule.mText.GetMeta().mRef == MemberRef )
+	auto* pMember = mModule.GetMember( MemberRef );
+	assert( pMember );
+	if ( !pMember )
+		return;
+
+	//	update reflection
+	AddModuleMemberTextEdit( *pMember );
+}
+
+
+bool TMasterApp::OnModuleMemberEdited(const SoyRef& MemberRef,const char* Value,ofxUITextInput& Widget)
+{
+	auto* pMember = mModule.GetMember( MemberRef );
+	if ( !pMember )
+		return false;
+	auto& Member = *pMember;
+	
+	//	set value
+	if ( !Member.SetData( Value ) )
 	{
-		AddModuleMemberTextEdit( 
-		mModule.mText.SetData( Value );
+		BufferString<100> ValueString;
+		Member.GetData( ValueString );
+		Widget.setTextString( static_cast<const char*>( ValueString ) );
 	}
-	*/
+
+	return true;
 }
 
 
 void TMasterApp::AddModuleMemberTextEdit(const SoyModuleMemberBase& Member)
 {
-	BufferString<100> RefString;
-	RefString << Member.mRef;
 	BufferString<100> WidgetName;
-	WidgetName << EDIT_MODULE_MEMBER_PREFIX << RefString;
+	WidgetName << EDIT_MODULE_MEMBER_PREFIX << Member.mRef;
 
 	//	make text edit
 	BufferString<100> Value;

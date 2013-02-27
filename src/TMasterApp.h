@@ -51,10 +51,13 @@ public:
 	virtual TSpreadModule&	GetModule()		{	return mModule;	}
 
 	ofxUILabel*				GetLabel(TMasterWidgets::Type Widget)	{	return static_cast<ofxUILabel*>( mCanvas.getWidget( static_cast<const char*>( SoyEnum::ToString( Widget ) ) ) );	}
+	
 	void					OnPeersChanged(const Array<SoyRef>& Peers);
-	void					OnCanvasEvent(ofxUIEventArgs &e);
+	void					OnMemberChanged(const SoyRef& MemberRef);
+	
+	void					OnCanvasEvent(ofxUIEventArgs& e);
 	void					OnConnectToServerButton(const SoyRef& PeerRef);
-	void					OnModuleMemberChanged(const SoyRef& MemberRef,const BufferString<100>& Value);
+	bool					OnModuleMemberEdited(const SoyRef& MemberRef,const char* Value,ofxUITextInput& Widget);
 
 protected:
 	void					AddModuleMemberTextEdit(const SoyModuleMemberBase& Member);

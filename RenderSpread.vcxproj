@@ -96,10 +96,20 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxTCPClient.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxTCPManager.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxTCPServer.cpp" />
+    <ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSoylent\src\ofCommandLineArgs.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSoylent\src\ofShape.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSoylent\src\SoyModule.cpp" />
     <ClCompile Include="..\..\..\addons\ofxSoylent\src\SoyNet.cpp" />
+    <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxNetwork.h" />
+    <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxNetworkUtils.h" />
+    <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPClient.h" />
+    <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPManager.h" />
+    <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPServer.h" />
+    <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.h" />
     <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyPacket.hpp" />
     <ClCompile Include="..\..\..\addons\ofxSoylent\src\SoyRef.cpp" />
     <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyPacket.h" />
