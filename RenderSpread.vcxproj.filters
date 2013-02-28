@@ -64,6 +64,15 @@
     <ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.cpp">
       <Filter>addons\ofxNetwork</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSoylent\src\SoySocket.cpp">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSoylent\src\SoyPacket.cpp">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\addons\ofxSoylent\src\memheap.cpp">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -311,9 +320,6 @@
     <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyPacket.h">
       <Filter>addons\ofxSoylent</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoyPacket.hpp">
-      <Filter>addons\ofxSoylent</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxNetwork.h">
       <Filter>addons\ofxNetwork</Filter>
     </ClInclude>
@@ -331,6 +337,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.h">
       <Filter>addons\ofxNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSoylent\src\SoySocket.h">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSoylent\src\memheap.hpp">
+      <Filter>addons\ofxSoylent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\addons\ofxSoylent\src\heaparray.hpp">
+      <Filter>addons\ofxSoylent</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

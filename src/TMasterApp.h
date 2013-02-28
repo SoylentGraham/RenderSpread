@@ -61,6 +61,8 @@ public:
 
 protected:
 	void					AddModuleMemberTextEdit(const SoyModuleMemberBase& Member);
+	void					AddStartServerButton();
+	void					AddCloseConnectionButton();
 	void					AddConnectToServerButton(const SoyRef& PeerRef);
 
 public:

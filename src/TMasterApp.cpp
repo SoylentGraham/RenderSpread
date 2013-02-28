@@ -3,6 +3,8 @@
 
 
 #define CONNECT_TO_SERVER_BUTTON_PREFIX	"Connect_to_"
+#define OPEN_SERVER_BUTTON_PREFIX		"Open_Server"
+#define CLOSE_CONNECTION_BUTTON_PREFIX	"Close_Connection"
 #define EDIT_MODULE_MEMBER_PREFIX		"Member_"
 #define BUTTON_SIZE		vec2f( 20, 20 )
 #define TEXTBOX_SIZE	vec2f( BUTTON_SIZE.x * 10, BUTTON_SIZE.y )
@@ -49,6 +51,10 @@ TMasterApp::TMasterApp()
 	ofAddListener( mCanvas.newGUIEvent, this, &TMasterApp::OnCanvasEvent );
 	ofAddListener( mModule.mOnMemberChanged, this, &TMasterApp::OnMemberChanged );
 
+	AddStartServerButton();
+	AddCloseConnectionButton();
+
+	//	make a temp peer to connect to until we have auto-discovery
 	SoyNet::TAddress LocalAddress("localhost", mModule.GetClusterPortRange()[0]);
 	mModule.RegisterPeer( SoyRef("Master"), LocalAddress );
 }
@@ -66,7 +72,7 @@ void TMasterApp::draw()
 void TMasterApp::update()
 {
 	TApp::update();
-
+	
 	//	update network status
 	ofxUILabel* pNetworkStatus = GetLabel( TMasterWidgets::NetworkStatus );
 	if ( pNetworkStatus )
@@ -83,7 +89,7 @@ void TMasterApp::update()
 		Text << mModule.mText.GetData();
 		pText->setLabel( static_cast<const char*>(Text) );
 	}
-
+	
 }
 
 
@@ -97,10 +103,36 @@ void TMasterApp::OnCanvasEvent(ofxUIEventArgs &e)
 	//	is it a connect-to-server button?
 	if ( WidgetName.StartsWith(CONNECT_TO_SERVER_BUTTON_PREFIX) )
 	{
+		auto& Button = static_cast<ofxUIButton&>( *e.widget );
+		if ( Button.getValue() )
+			return;
+
 		//	extract ref
 		WidgetName.RemoveAt( 0, strlen(CONNECT_TO_SERVER_BUTTON_PREFIX) );
 		SoyRef PeerRef( WidgetName );
 		OnConnectToServerButton( PeerRef );
+		return;
+	}
+	
+	//	start server
+	if ( WidgetName.StartsWith(OPEN_SERVER_BUTTON_PREFIX) )
+	{
+		auto& Button = static_cast<ofxUIButton&>( *e.widget );
+		if ( Button.getValue() )
+			return;
+
+		mModule.OpenClusterServer();
+		return;
+	}
+
+	//	close connection
+	if ( WidgetName.StartsWith(CLOSE_CONNECTION_BUTTON_PREFIX) )
+	{
+		auto& Button = static_cast<ofxUIButton&>( *e.widget );
+		if ( Button.getValue() )
+			return;
+
+		mModule.DisconnectCluster();
 		return;
 	}
 	
@@ -134,7 +166,7 @@ void TMasterApp::OnPeersChanged(const Array<SoyRef>& Peers)
 void TMasterApp::OnConnectToServerButton(const SoyRef& PeerRef)
 {
 	//	change module state
-	mModule.ChangeState<SoyModuleState_ClientConnect>( PeerRef );
+	mModule.ConnectToClusterServer( PeerRef );
 }
 
 
@@ -193,10 +225,8 @@ void TMasterApp::AddModuleMemberTextEdit(const SoyModuleMemberBase& Member)
 
 void TMasterApp::AddConnectToServerButton(const SoyRef& PeerRef)
 {
-	BufferString<100> RefString;
-	RefString << PeerRef;
 	BufferString<100> WidgetName;
-	WidgetName << CONNECT_TO_SERVER_BUTTON_PREFIX << RefString;
+	WidgetName << CONNECT_TO_SERVER_BUTTON_PREFIX << PeerRef;
 
 	//	grab existing widget
 	auto* pButton = static_cast<ofxUIButton*>( mCanvas.getWidget( static_cast<const char*>( WidgetName ) ) );
@@ -210,4 +240,37 @@ void TMasterApp::AddConnectToServerButton(const SoyRef& PeerRef)
 	}
 }
 
+void TMasterApp::AddStartServerButton()
+{
+	BufferString<100> WidgetName;
+	WidgetName << OPEN_SERVER_BUTTON_PREFIX;
+
+	//	grab existing widget
+	auto* pButton = static_cast<ofxUIButton*>( mCanvas.getWidget( static_cast<const char*>( WidgetName ) ) );
+	if ( pButton )
+	{
+	}
+	else
+	{
+		//	make button for this server
+		pButton = mCanvas.addButton( static_cast<const char*>( WidgetName ), false, BUTTON_SIZE.x, BUTTON_SIZE.y );
+	}
+}
+
+void TMasterApp::AddCloseConnectionButton()
+{
+	BufferString<100> WidgetName;
+	WidgetName << CLOSE_CONNECTION_BUTTON_PREFIX;
+
+	//	grab existing widget
+	auto* pButton = static_cast<ofxUIButton*>( mCanvas.getWidget( static_cast<const char*>( WidgetName ) ) );
+	if ( pButton )
+	{
+	}
+	else
+	{
+		//	make button for this server
+		pButton = mCanvas.addButton( static_cast<const char*>( WidgetName ), false, BUTTON_SIZE.x, BUTTON_SIZE.y );
+	}
+}
 
