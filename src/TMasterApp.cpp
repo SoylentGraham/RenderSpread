@@ -49,8 +49,8 @@ TMasterApp::TMasterApp()
 	ofAddListener( mCanvas.newGUIEvent, this, &TMasterApp::OnCanvasEvent );
 	ofAddListener( mModule.mOnMemberChanged, this, &TMasterApp::OnMemberChanged );
 
-	SoyModulePeerAddress LocalAddress("localhost", mModule.GetClusterPortRange()[0]);
-	mModule.OnFoundPeer( SoyRef("Master"), LocalAddress );
+	SoyNet::TAddress LocalAddress("localhost", mModule.GetClusterPortRange()[0]);
+	mModule.RegisterPeer( SoyRef("Master"), LocalAddress );
 }
 
 
@@ -85,7 +85,7 @@ void TMasterApp::update()
 	}
 
 }
-	
+
 
 void TMasterApp::OnCanvasEvent(ofxUIEventArgs &e)
 {
@@ -198,15 +198,16 @@ void TMasterApp::AddConnectToServerButton(const SoyRef& PeerRef)
 	BufferString<100> WidgetName;
 	WidgetName << CONNECT_TO_SERVER_BUTTON_PREFIX << RefString;
 
-	auto* pButton = mServerButtons.Find( WidgetName );
+	//	grab existing widget
+	auto* pButton = static_cast<ofxUIButton*>( mCanvas.getWidget( static_cast<const char*>( WidgetName ) ) );
 	if ( pButton )
 	{
-		//	update button
-		return;
 	}
-
-	//	make button for this server
-	mCanvas.addButton( static_cast<const char*>( WidgetName ), false, BUTTON_SIZE.x, BUTTON_SIZE.y );
+	else
+	{
+		//	make button for this server
+		pButton = mCanvas.addButton( static_cast<const char*>( WidgetName ), false, BUTTON_SIZE.x, BUTTON_SIZE.y );
+	}
 }
 
 

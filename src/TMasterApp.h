@@ -66,7 +66,6 @@ protected:
 public:
 	TSpreadModuleMaster			mModule;
 	ofxUICanvas					mCanvas;
-	Array<BufferString<100>>	mServerButtons;	//	connect to server X
 };
 
 
