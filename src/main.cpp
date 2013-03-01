@@ -22,6 +22,7 @@ int main( )
 	ScreenSize /= 2;
 	window.setWindowPosition( ScreenSize.x, ScreenSize.y );
 	ofSetVerticalSync(true);
+	ofSetFrameRate(60);
 
 	//	line antialiasing
 	ofEnableSmoothing(); 
